@@ -24,8 +24,13 @@ class NotesDao extends DatabaseAccessor<AppDatabase> with _$NotesDaoMixin {
       ));
 
   //Read
-  Stream<List<NotesModel>> watchNotes() =>
-      select(notesTable).watch().map((event) => event
+  Stream<List<NotesModel>> watchNotes() => (select(notesTable)
+        ..orderBy([
+          (tbl) =>
+              OrderingTerm(expression: tbl.priority, mode: OrderingMode.desc),
+        ]))
+      .watch()
+      .map((event) => event
           .map((e) => NotesModel(
                 id: e.id,
                 title: e.title,

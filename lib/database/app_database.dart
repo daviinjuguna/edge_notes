@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+import 'connection/connection.dart' as impl;
 
 import 'notes/notes_dao.dart';
 import 'notes/notes_table.dart';
@@ -18,7 +14,7 @@ class AppDatabase extends _$AppDatabase {
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
 
-  AppDatabase() : super(_openConnection()) {
+  AppDatabase() : super(impl.connect()) {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   }
 
@@ -28,15 +24,4 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   // Future<void> insertNotes
-}
-
-LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
-  return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
 }

@@ -9,10 +9,11 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:edge_notes/bloc/note_actor/note_actor_cubit.dart' as _i6;
-import 'package:edge_notes/bloc/note_form/note_form_cubit.dart' as _i7;
-import 'package:edge_notes/bloc/note_watcher/note_watcher_bloc.dart' as _i8;
+import 'package:edge_notes/bloc/note_actor/note_actor_cubit.dart' as _i7;
+import 'package:edge_notes/bloc/note_form/note_form_cubit.dart' as _i8;
+import 'package:edge_notes/bloc/note_watcher/note_watcher_bloc.dart' as _i9;
 import 'package:edge_notes/bloc/single_watcher/single_watcher_bloc.dart' as _i5;
+import 'package:edge_notes/bloc/theme/theme_cubit.dart' as _i6;
 import 'package:edge_notes/database/app_database.dart' as _i3;
 import 'package:edge_notes/repo/notes_repo.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
@@ -34,11 +35,12 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i4.NotesRepoImp(gh<_i3.AppDatabase>()));
     gh.factory<_i5.SingleWatcherBloc>(
         () => _i5.SingleWatcherBloc(gh<_i4.NotesRepo>()));
-    gh.factory<_i6.NoteActorCubit>(
-        () => _i6.NoteActorCubit(gh<_i4.NotesRepo>()));
-    gh.factory<_i7.NoteFormCubit>(() => _i7.NoteFormCubit(gh<_i4.NotesRepo>()));
-    gh.factory<_i8.NoteWatcherBloc>(
-        () => _i8.NoteWatcherBloc(gh<_i4.NotesRepo>()));
+    gh.factory<_i6.ThemeCubit>(() => _i6.ThemeCubit());
+    gh.factory<_i7.NoteActorCubit>(
+        () => _i7.NoteActorCubit(gh<_i4.NotesRepo>()));
+    gh.factory<_i8.NoteFormCubit>(() => _i8.NoteFormCubit(gh<_i4.NotesRepo>()));
+    gh.factory<_i9.NoteWatcherBloc>(
+        () => _i9.NoteWatcherBloc(gh<_i4.NotesRepo>()));
     return this;
   }
 }

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:edge_notes/bloc/note_actor/note_actor_cubit.dart';
 import 'package:edge_notes/bloc/note_watcher/note_watcher_bloc.dart';
+import 'package:edge_notes/bloc/theme/theme_cubit.dart';
 import 'package:edge_notes/database/notes/notes_table.dart';
 import 'package:edge_notes/routes/app_router.dart';
+import 'package:edge_notes/utils/radio_cell.dart';
 import 'package:edge_notes/widgets/retry_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +37,48 @@ class _NotesPageState extends State<NotesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Notes"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.color_lens),
+            onPressed: () {
+              // theme
+              showModalBottomSheet(
+                context: context,
+                builder: (builder) => BlocConsumer<ThemeCubit, ThemeState>(
+                  listener: (context, state) => Navigator.of(context).pop(),
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RadioCell<ThemeState>(
+                          title: "System",
+                          groupValue: state,
+                          value: ThemeState.system,
+                          onChanged: (value) =>
+                              context.read<ThemeCubit>().theme = value,
+                        ),
+                        RadioCell<ThemeState>(
+                          title: "Light",
+                          groupValue: state,
+                          value: ThemeState.light,
+                          onChanged: (value) =>
+                              context.read<ThemeCubit>().theme = value,
+                        ),
+                        RadioCell<ThemeState>(
+                          title: "Dark",
+                          groupValue: state,
+                          value: ThemeState.dark,
+                          onChanged: (value) =>
+                              context.read<ThemeCubit>().theme = value,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<NoteWatcherBloc, NoteWatcherState>(
         builder: (context, state) {
@@ -65,10 +109,16 @@ class _NotesPageState extends State<NotesPage> {
                       leading: Icon(
                         Icons.play_circle_outline_outlined,
                         color: _priorityToColor(note.priority),
+                        size: 50,
                       ),
-                      title: Text(note.title),
+                      title: Text(
+                        note.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
                       subtitle: Text(DateFormat.yMMMEd().format(note.time)),
-                      onTap: () {},
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

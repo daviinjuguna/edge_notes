@@ -20,8 +20,11 @@ class SplashPage extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
           ),
-          Divider(
-            color: Theme.of(context).colorScheme.primary,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(
+              color: Theme.of(context).colorScheme.primary,
+            ),
           ),
           Text("A minimal Note Taking App"),
           Spacer(),
